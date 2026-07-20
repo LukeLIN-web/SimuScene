@@ -1,0 +1,21 @@
+Conditions
+Restrict the movement of objects within the container
+Add multiple moving objects
+Introduce rotational dynamics
+Apply time-dependent changes
+Add surfaces with different material frictions
+Change the mass distribution of objects
+Introduce obstacles on the movement path
+Change the shape of objects
+Observe motion in different gravitational fields
+Combine different elastic collisions
+Introduce springs or elastic elements
+Move on an inclined plane
+Add fluid resistance
+Consider changes in air resistance
+Move on unstable surfaces
+Increase rotation on an inclined plane
+Introduce non-uniform magnetic field effects
+Observe motion on planes with different inclinations
+Introduce periodic external forces
+Combine changes in inertial reference frames.

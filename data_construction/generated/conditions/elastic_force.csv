@@ -1,0 +1,16 @@
+Conditions
+Apply a non-constant external force 
+ Introduce a combination of frictional and elastic forces 
+ Place the object on an inclined plane 
+ Add additional objects of different masses 
+ Apply periodic vibrations to the elastic object 
+ Change the position of the object's fixed point 
+ The object is constrained to a nonlinear trajectory 
+ Attach a damping mechanism to the elastic object 
+ Simulate multi-object collisions in a confined space 
+ Apply multiple deformation modes to the elastic object 
+ Combine the effects of rotational and linear motion 
+ Introduce deformable boundary conditions 
+ Introduce magnetic or electrostatic forces between objects 
+ Simulate the elastic motion of objects in a fluid medium 
+ Restrict the object's degrees of freedom by applying different constraints.

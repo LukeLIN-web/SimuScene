@@ -1,0 +1,21 @@
+Conditions
+Introduce irregularly shaped objects
+Set different material collision surfaces
+Introduce friction during collision
+Change the initial velocity direction of the object
+Add elastic connections like springs or rubber bands
+Set adhesion phenomena after collision
+Add sound effect simulation during collision
+Use objects of different sizes and masses for collision
+Introduce external force fields such as changes in the gravitational field
+Set changes in the surface roughness of objects
+Simulate deformation of objects after collision
+Introduce obstacles in the collision area
+Set the motion trajectory of objects as curves
+Introduce vibration effects during collision
+Set splitting or combining of objects after collision
+Collide at different heights
+Simulate collisions between multi-layer structures
+Introduce inertial effects of rotating objects
+Set objects to roll or slide after collision
+Introduce energy loss by changing material properties

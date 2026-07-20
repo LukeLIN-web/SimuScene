@@ -1,0 +1,16 @@
+Conditions
+Add changes in friction 
+ Introduce irregular-shaped objects 
+ Add energy input or output 
+ Change the position of the fulcrum 
+ Use elastic connectors 
+ Introduce non-uniform mass distribution 
+ Simulate wind resistance effects 
+ Change the tilt angle of the rotation axis 
+ Apply non-constant external forces 
+ Increase the size change of the rotating object 
+ Introduce collision or contact events 
+ Set acceleration or deceleration of the rotating object 
+ Introduce different surface roughness 
+ Add vibration effects during rotation 
+ Introduce damping effects

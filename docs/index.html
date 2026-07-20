@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="theme-color" content="#f7f8fb" />
-  <title>SimuScene — Physical Simulation Code Generation Benchmark</title>
-  <meta name="description" content="SimuScene: Text → Code → Video evaluation for physical simulation code generation." />
+  <title>SimuScene — Code Generation for Physics-Inspired Animations</title>
+  <meta name="description" content="SimuScene: a benchmark evaluating whether LLMs can generate executable code whose rendered animations are visually aligned with physical scenario descriptions." />
 
   <style>
     :root{
@@ -476,18 +476,19 @@
       <div class="reveal">
         <div class="pill">
           <span class="dot" aria-hidden="true"></span>
-          <span>Benchmarking physical simulation via executable code</span>
+          <span>Benchmarking code generation for physics-inspired animations</span>
         </div>
 
         <div class="hero-wrap">
           <div style="min-width:min(720px,100%);">
             <h1>
               <span class="gradient-text">SimuScene</span><br/>
-              Text → Code → Video Evaluation for Physical Reasoning
+              Training &amp; Benchmarking Code Generation for Physics-Inspired Animations
             </h1>
             <p class="hero-sub">
-              Given a natural-language physical scenario, models generate Python code to render a simulation video.
-              Correctness is measured by whether the observed dynamics match the description.
+              Given a natural-language physical scenario, models generate executable Python code that renders a
+              physics-inspired animation. Correctness is judged by whether the rendered qualitative dynamics are
+              visually aligned with the description — verified by a vision-language model over verification questions.
             </p>
 
             <div class="hero-actions">
@@ -505,7 +506,7 @@
     <section id="videos">
       <div class="reveal">
         <div class="section-title">Videos</div>
-        <h2>Simulation gallery</h2>
+        <h2>Animation gallery</h2>
 
         <div class="grid3">
           <div class="card">
@@ -543,22 +544,23 @@
 
         <div class="grid3">
           <div class="li">
-            <b>Outcome-based evaluation of code generation</b>
-            <p>An evaluation paradigm is introduced that assesses code generation models
-              by executing generated programs and evaluating the resulting physical outcomes,
-              rather than relying solely on static code correctness.</p>
+            <b>A benchmark for physics-inspired animation generation</b>
+            <p>SimuScene is a novel task, dataset, and benchmark for physical-scenario understanding,
+              qualitative dynamics, and animation-oriented code generation — spanning 52 concepts across
+              five physics domains, with a rigorously human-verified 334-scenario test set and
+              quality-controlled training data.</p>
           </div>
           <div class="li">
-            <b>A large-scale physical simulation benchmark</b>
-            <p>SimuScene is presented as a large-scale benchmark of physical simulation scenarios,
-              covering multiple domains and fine-grained concepts to enable systematic analysis
-              of physical reasoning in code generation.</p>
+            <b>Frontier LLMs still struggle</b>
+            <p>We evaluate 10 contemporary LLMs and find the task challenging: even the strongest model
+              reaches only ~21.5% Avg@8 accuracy, exposing the gap between generating video-producing code
+              and producing animations that faithfully capture physical dynamics.</p>
           </div>
           <div class="li">
-            <b>Executable code → video → visual judgment pipeline</b>
-            <p>An automated evaluation pipeline is proposed in which generated code is executed
-              to produce simulation videos, and physical correctness is verified through
-              vision-based judgments.</p>
+            <b>Code–Video–Judge reinforcement learning</b>
+            <p>An automated pipeline executes generated code into videos and uses a vision-language model
+              to answer verification questions. The resulting visual reward trains text-only models via RL,
+              improving text-to-code-to-video consistency with no evidence of reward hacking.</p>
           </div>
         </div>
       </div>
@@ -568,7 +570,7 @@
     <section id="benchmark">
       <div class="reveal">
         <div class="section-title">Benchmark</div>
-        <h2>Frontier LLMs performance on SimuPhy benchmark</h2>
+        <h2>Frontier LLMs on the SimuScene benchmark</h2>
 
         <div class="table-wrap">
           <table>
@@ -664,14 +666,14 @@
       <div class="reveal">
         <div class="section-title">Pipeline</div>
         <h2>How evaluation works</h2>
-        <p>SimuScene evaluates whether the generated simulation matches the intended physical behavior.</p>
+        <p>SimuScene evaluates whether the generated animation is visually aligned with the intended physical dynamics.</p>
 
         <div class="steps">
           <div class="step">
             <div class="badge">1</div>
             <div>
               <h3>Text → Code</h3>
-              <p>The model writes executable Python simulation code from a natural-language scenario.</p>
+              <p>The model writes executable Python code that renders the scenario from a natural-language description.</p>
             </div>
           </div>
 
@@ -745,7 +747,7 @@
         </div>
 
         <pre id="bibtex">@misc{simuscene2026,
-          title={SimuScene: Training and Benchmarking Code Generation to Simulate Physical Scenarios}, 
+          title={Training and Benchmarking Code Generation for Physics-Inspired Animations},
           author={Yanan Wang and Renxi Wang and Yongxin Wang and Xuezhi Liang and Fajri Koto and Timothy Baldwin and Xiaodan Liang and Haonan Li},
           year={2026},
           eprint={2602.10840},
