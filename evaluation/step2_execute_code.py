@@ -1,3 +1,4 @@
+import ast
 import json
 import re
 import tempfile
@@ -20,11 +21,17 @@ parser.add_argument(
     default="Qwen3-235B-A22B",
     help="model / process batch name"
 )
+parser.add_argument("--allow-unfenced", action="store_true",
+                    help="when an answer has no ```python block, run the whole answer if it parses as Python")
+parser.add_argument("--pass-stem", action="store_true",
+                    help="run each script inside its video folder and pass only the file stem as `name`, as the prompt describes")
+parser.add_argument("--num-processes", type=int, default=max(1, int(cpu_count() * 0.75)))
 args = parser.parse_args()
 
 response_num = 8
 
 process_batch = args.process_batch
+ALLOW_UNFENCED, PASS_STEM = args.allow_unfenced, args.pass_stem
 
 num = 0
 
@@ -43,6 +50,13 @@ def extract_triple_single_quote_code(text):
     pattern = r"```python\n(.*?)```"
     matches = re.findall(pattern, text, re.DOTALL)
     return matches
+
+def is_python(text):
+    try:
+        ast.parse(text)
+    except SyntaxError:
+        return False
+    return True
 
 def no_install(*args, **kwargs):
     raise RuntimeError("No install")
@@ -105,6 +119,8 @@ def process_video(args):
     video_name = f"video_{id}_{video_id}.mp4"
     response = clean_response(response)
     question = extract_triple_single_quote_code(response)
+    if not question and ALLOW_UNFENCED and response.strip() and is_python(response):
+        question = [response]
 
     if not question:
         # print(f"Warning: No Python code found for video_{id}_{video_id}")
@@ -130,7 +146,8 @@ def process_video(args):
             f.write(s)
         # Run the video generation
         result = run_limited_subprocess(
-            [sys.executable, tmp_path, os.path.join(save_path, video_name)],
+            [sys.executable, os.path.abspath(tmp_path), video_name[:-len('.mp4')] if PASS_STEM else os.path.join(save_path, video_name)],
+            cwd=save_path if PASS_STEM else None,
             mem_limit_mb=3584,
             timeout=300,
             env=os.environ.copy(),
@@ -179,7 +196,7 @@ def main():
     # with open('all_tasks.json', 'w') as f:
     #     json.dump(all_tasks, f)
     # Determine number of processes (use 75% of available CPUs to avoid overwhelming the system)
-    num_processes = max(1, int(cpu_count() * 0.75))
+    num_processes = args.num_processes
     print(f"Using {num_processes} processes")
     
     # Process videos in parallel
