@@ -232,6 +232,16 @@ human_modify/val/video_<i>.json (regenerated from data/val.jsonl).
       --pass-stem       run each script inside its video folder and pass only
                         the file stem as `name`, as the prompt describes; by
                         default the full output path is passed
+      --retry-name-option
+                        when a script rejects the positional `name` with an
+                        argparse usage error (it declared `--name`), run it
+                        again with `--name <name>`; the prompt does not say
+                        how `name` is passed
+      --keep-pip-lines  by default every line containing `pip` is replaced
+                        by `pass`, which also hits lines such as
+                        `def ensure(import_name, pip_name):` and leaves the
+                        script invalid; with this flag the code is left as
+                        is and installs are blocked with PIP_NO_INDEX=1
       --num-processes   worker count (default: 75% of CPU cores)
 
   Step 3 - VLM verification (Qwen2.5-VL-72B-Instruct)

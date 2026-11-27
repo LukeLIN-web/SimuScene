@@ -25,6 +25,10 @@ parser.add_argument("--allow-unfenced", action="store_true",
                     help="when an answer has no ```python block, run the whole answer if it parses as Python")
 parser.add_argument("--pass-stem", action="store_true",
                     help="run each script inside its video folder and pass only the file stem as `name`, as the prompt describes")
+parser.add_argument("--retry-name-option", action="store_true",
+                    help="when a script rejects the positional name with an argparse usage error, run it again with `--name <name>`")
+parser.add_argument("--keep-pip-lines", action="store_true",
+                    help="leave lines that contain `pip` as they are and block installs with PIP_NO_INDEX=1 instead")
 parser.add_argument("--num-processes", type=int, default=max(1, int(cpu_count() * 0.75)))
 args = parser.parse_args()
 
@@ -32,6 +36,7 @@ response_num = 8
 
 process_batch = args.process_batch
 ALLOW_UNFENCED, PASS_STEM = args.allow_unfenced, args.pass_stem
+RETRY_NAME_OPTION, KEEP_PIP_LINES = args.retry_name_option, args.keep_pip_lines
 
 num = 0
 
@@ -135,8 +140,9 @@ def process_video(args):
                     code = question[i]
             code = code.replace('\"', '"')
             code = sanitize_code(code)
-            pattern = r"^(\s*).*pip.*$"
-            code = re.sub(pattern, r"\1pass", code, flags=re.M)
+            if not KEEP_PIP_LINES:
+                pattern = r"^(\s*).*pip.*$"
+                code = re.sub(pattern, r"\1pass", code, flags=re.M)
             tmp.write(code)
             tmp_path = tmp.name
         s = f'python3 {tmp_path} {os.path.join(save_path, video_name)}'
@@ -145,13 +151,21 @@ def process_video(args):
                 s += "\n"
             f.write(s)
         # Run the video generation
-        result = run_limited_subprocess(
-            [sys.executable, os.path.abspath(tmp_path), video_name[:-len('.mp4')] if PASS_STEM else os.path.join(save_path, video_name)],
+        cmd = [sys.executable, os.path.abspath(tmp_path)]
+        name = video_name[:-len('.mp4')] if PASS_STEM else os.path.join(save_path, video_name)
+        run = partial(
+            run_limited_subprocess,
             cwd=save_path if PASS_STEM else None,
             mem_limit_mb=3584,
             timeout=300,
-            env=os.environ.copy(),
+            env={**os.environ, 'PIP_NO_INDEX': '1'} if KEEP_PIP_LINES else os.environ.copy(),
             )
+        try:
+            result = run(cmd + [name])
+        except Exception as e:
+            if not (RETRY_NAME_OPTION and 'usage:' in str(e) and 'error:' in str(e)):
+                raise
+            result = run(cmd + ['--name', name])
             
             # Clean up temporary file
         # if tmp_path and os.path.exists(tmp_path):
